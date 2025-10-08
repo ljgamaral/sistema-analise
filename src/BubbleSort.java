@@ -81,9 +81,6 @@ public class BubbleSort {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
             return null;
         }
-        for(arquivo arq : arquivos) {
-            System.out.println(arq.getNome());
-        }
         return arquivos;
     }
 

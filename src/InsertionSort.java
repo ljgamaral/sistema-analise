@@ -1,72 +1,56 @@
+import java.util.Vector;
+
 public class InsertionSort {
-    public arquivo[] ordenar(arquivo[] arquivos, Object ordenarPor, String nomeAtributoOrdenar) {
-        String tipoDadoOrdenar = ordenarPor.getClass().getSimpleName();
-
-        switch(tipoDadoOrdenar) {
-            case "Integer":
-                arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
-                break;
-            case "String":
-                arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
-                break;
-            case "Timestamp":
-                arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
-                break;
-            default:
-                System.out.println("Erro: O tipo do atributo '" + tipoDadoOrdenar + "' não é aceito");
-                return null;
+    int tempoGasto = 0;
+    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        Cronometro tempo = new Cronometro();
+        if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else if ("Nome".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else if ("Data de criação".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else {
+            System.out.println("Erro: não há nenhum atributo chamado '" + nomeAtributoOrdenar + "'");
         }
-        
+        System.out.println(tempoGasto);
         return arquivos;
     }
     
-    public arquivo[] ordenaInteger(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
-        if(nomeAtributoOrdenar == "id") {
+    public Vector<arquivo> ordenaInteger(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
+        if("ID".equals(nomeAtributoOrdenar)) {
             for(int i = 1; i < n; i++) {
-                arquivo chave = arquivos[i];
+                arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
-                while (j >= 0 && arquivos[j].getId() > chave.getId()) {
-                    arquivos[j + 1] = arquivos[j];
+                while (j >= 0 && arquivos.get(j).getId() > chave.getId()) {
+                    arquivos.set(j + 1, arquivos.get(j));
                     j--;
                 }
 
-                arquivos[j + 1] = chave;
+                arquivos.set(j + 1, chave);
             }
-        } else if (nomeAtributoOrdenar == "tamanho") {
+        } else if ("Tamanho".equals(nomeAtributoOrdenar)) {
             for (int i = 1; i < n; i++){
-                arquivo chave = arquivos[i];
+                arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
-                while (j >= 0 && arquivos[j].getTamanho() > chave.getTamanho()) {
-                    arquivos[j + 1] = arquivos[j];
+                while (j >= 0 && arquivos.get(j).getTamanho() > chave.getTamanho()) {
+                    arquivos.set(j + 1, arquivos.get(j));
                     j--;
                 }
 
-                arquivos[j + 1] = chave;
-            }
-        } else {
-            System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
-            return null;
-        }
-        
-        return arquivos;
-    }
-    
-    public arquivo[] ordenaString(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
-        if(nomeAtributoOrdenar == "nome") {
-            for (int i = 1; i < n; i++){
-                arquivo chave = arquivos[i];
-                int j = i - 1;
-
-                while (j >= 0 && arquivos[j].getNome().compareToIgnoreCase(chave.getNome()) > 0) {
-                    arquivos[j + 1].setId(arquivos[j].getId());
-                    j--;
-                }
-
-                arquivos[j + 1] = chave;
+                arquivos.set(j + 1, chave);
             }
         } else {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
@@ -76,19 +60,41 @@ public class InsertionSort {
         return arquivos;
     }
     
-    public arquivo[] ordenaLong(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
-        if(nomeAtributoOrdenar == "data_criacao") {
+    public Vector<arquivo> ordenaString(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
+        if("Nome".equals(nomeAtributoOrdenar)) {
             for (int i = 1; i < n; i++){
-                arquivo chave = arquivos[i];
+                arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
-                while (j >= 0 && arquivos[j].getDataCriacaoLong() > chave.getDataCriacaoLong()) {
-                    arquivos[j + 1] = arquivos[j];
+                while (j >= 0 && arquivos.get(j).getNome().compareToIgnoreCase(chave.getNome()) > 0) {
+                    arquivos.set(j + 1, arquivos.get(j));
                     j--;
                 }
 
-                arquivos[j + 1] = chave;
+                arquivos.set(j + 1, chave);
+            }
+        } else {
+            System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
+            return null;
+        }
+        
+        return arquivos;
+    }
+    
+    public Vector<arquivo> ordenaLong(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
+        if("Data de criação".equals(nomeAtributoOrdenar)) {
+            for (int i = 1; i < n; i++){
+                arquivo chave = arquivos.get(i);
+                int j = i - 1;
+
+                while (j >= 0 && arquivos.get(j).getDataCriacaoLong() > chave.getDataCriacaoLong()) {
+                    arquivos.set(j + 1, arquivos.get(j));
+                    j--;
+                }
+
+                arquivos.set(j + 1 , chave);
             }
         } else {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);

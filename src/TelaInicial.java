@@ -67,6 +67,11 @@ public class TelaInicial extends JFrame implements ActionListener {
         arquivos = ordenar.ordenar(arquivos, ordenarPor);
     }
 
+    public void ordenaInsercao(String ordenarPor) {
+        InsertionSort ordenar = new InsertionSort();
+        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+    }
+    
     public static void main(String[] args) throws SQLException {
         TelaInicial janela = new TelaInicial();
         janela.setVisible(true);
@@ -79,7 +84,9 @@ public class TelaInicial extends JFrame implements ActionListener {
             ordenaBolha(resposta);
             modelo.atualizarTabela(arquivos);
         } else if(e.getSource() == bOrdenaInsercao){
-            
+            String resposta = JOptionPane.showInputDialog("Insira o nome da coluna a ser ordenada:");
+            ordenaInsercao(resposta);
+            modelo.atualizarTabela(arquivos);            
         }
     }
 }
