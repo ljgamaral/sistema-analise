@@ -1,15 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Vector;
 
-public class TelaInicial extends JFrame {
-
+public class TelaInicial extends JFrame implements ActionListener {
+    Vector<arquivo> arquivos = new Vector<>();
     JTable tabela;
     JButton bOrdenaBolha, bOrdenaInsercao;
+    tabela modelo;
     
     public Vector<arquivo> getDados() throws SQLException {
-        Vector<arquivo> arquivos = new Vector<>();
         conexao con = new conexao();
         ResultSet rs = null;
         Connection conn = con.getConnection();
@@ -31,28 +33,20 @@ public class TelaInicial extends JFrame {
             arquivo novoArquivo = new arquivo(id, nome, data_criacao, tamanho, arquivo);
             arquivos.add(novoArquivo);
         }
-        
-        
+
         return arquivos; 
     }
     
     public TelaInicial() throws SQLException {
-        String[] colunas = {"ID", "Nome", "Tamanho", "Data de criação"};
-        Vector<arquivo> arquivos = getDados();
-        Object[][] valores = new Object[arquivos.size()][4];
-        for (int i = 0; i < arquivos.size(); i++) {
-            valores[i][0] = arquivos.get(i).getId();
-            valores[i][1] = arquivos.get(i).getNome();
-            valores[i][2] = arquivos.get(i).getTamanho();
-            valores[i][3] = arquivos.get(i).getDataCriacaoStringFormatado();
-        }
-
-
-        tabela = new JTable(valores, colunas);
+        modelo = new tabela(arquivos);
+        modelo.atualizarTabela(getDados());
+        tabela = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(tabela);
 
         bOrdenaBolha = new JButton("Ordenar Bolha");
         bOrdenaInsercao = new JButton("Ordenar Inserção");
+        bOrdenaBolha.addActionListener(this);
+        bOrdenaInsercao.addActionListener(this);
 
         JPanel painelBotoes = new JPanel();
         painelBotoes.add(bOrdenaBolha);
@@ -67,9 +61,25 @@ public class TelaInicial extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    public void ordenaBolha(String ordenarPor) {
+        BubbleSort ordenar = new BubbleSort();
+        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+    }
 
     public static void main(String[] args) throws SQLException {
         TelaInicial janela = new TelaInicial();
         janela.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == bOrdenaBolha) {
+            String resposta = JOptionPane.showInputDialog("Insira o nome da coluna a ser ordenada:");
+            ordenaBolha(resposta);
+            modelo.atualizarTabela(arquivos);
+        } else if(e.getSource() == bOrdenaInsercao){
+            
+        }
     }
 }

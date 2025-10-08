@@ -1,45 +1,58 @@
-public class BubbleSort {
-    public arquivo[] ordenar(arquivo[] arquivos, Object ordenarPor, String nomeAtributoOrdenar) {
-        String tipoDadoOrdenar = ordenarPor.getClass().getSimpleName();
 
-        switch(tipoDadoOrdenar) {
-            case "Integer":
-                arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
-                break;
-            case "String":
-                arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
-                break;
-            case "Timestamp":
-                arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
-                break;
-            default:
-                System.out.println("Erro: O tipo do atributo '" + tipoDadoOrdenar + "' não é aceito");
-                return null;
+import java.util.Vector;
+
+public class BubbleSort {
+
+    public int tempoGasto = 0;
+
+    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        Cronometro tempo = new Cronometro();
+        if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else if ("Nome".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else if ("Data de criação".equals(nomeAtributoOrdenar)) {
+            tempo.start();
+            arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
+            tempo.parar();
+            tempoGasto = tempo.getTimerInt();
+        } else {
+            System.out.println("Erro: não há nenhum atributo chamado '" + nomeAtributoOrdenar + "'");
         }
-        
+        System.out.println(tempoGasto);
         return arquivos;
     }
-    
-    public arquivo[] ordenaInteger(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
+
+    public int getTempoGasto() {
+        return tempoGasto;
+    }
+
+    public Vector<arquivo> ordenaInteger(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
         arquivo aux;
-        if(nomeAtributoOrdenar == "id") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getId() > arquivos[j+1].getId()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
+        if ("ID".equals(nomeAtributoOrdenar)) {
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - 1 - i; j++) {
+                    if (arquivos.get(j).getId() > arquivos.get(j + 1).getId()) {
+                        aux = arquivos.get(j);
+                        arquivos.set(j, arquivos.get(j + 1));
+                        arquivos.set(j + 1, aux);
                     }
                 }
             }
-        } else if (nomeAtributoOrdenar == "tamanho") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getTamanho() > arquivos[j+1].getTamanho()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
+        } else if ("Tamanho".equals(nomeAtributoOrdenar)) {
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - 1 - i; j++) {
+                    if (arquivos.get(j).getTamanho() > arquivos.get(j + 1).getTamanho()) {
+                        aux = arquivos.get(j);
+                        arquivos.set(j, arquivos.get(j + 1));
+                        arquivos.set(j + 1, aux);
                     }
                 }
             }
@@ -47,20 +60,20 @@ public class BubbleSort {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
             return null;
         }
-        
+
         return arquivos;
     }
-    
-    public arquivo[] ordenaString(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
+
+    public Vector<arquivo> ordenaString(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
         arquivo aux;
-        if(nomeAtributoOrdenar == "nome") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getNome().compareToIgnoreCase(arquivos[j + 1].getNome()) > 0) {
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j + 1];
-                        arquivos[j + 1] = aux;
+        if ("Nome".equals(nomeAtributoOrdenar)) {
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - 1 - i; j++) {
+                    if (arquivos.get(j).getNome().compareToIgnoreCase(arquivos.get(j + 1).getNome()) > 0) {
+                        aux = arquivos.get(j);
+                        arquivos.set(j, arquivos.get(j + 1));
+                        arquivos.set(j + 1, aux);
                     }
                 }
             }
@@ -68,20 +81,22 @@ public class BubbleSort {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
             return null;
         }
-        
+        for(arquivo arq : arquivos) {
+            System.out.println(arq.getNome());
+        }
         return arquivos;
     }
-    
-    public arquivo[] ordenaLong(arquivo[] arquivos, String nomeAtributoOrdenar) {
-        final int n = arquivos.length;
+
+    public Vector<arquivo> ordenaLong(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+        final int n = arquivos.size();
         arquivo aux;
-        if(nomeAtributoOrdenar == "data_criacao") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getDataCriacaoLong() > arquivos[j+1].getDataCriacaoLong()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
+        if ("Data de criação".equals(nomeAtributoOrdenar)) {
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - 1 - i; j++) {
+                    if (arquivos.get(j).getDataCriacaoLong() > arquivos.get(j + 1).getDataCriacaoLong()) {
+                        aux = arquivos.get(j);
+                        arquivos.set(j, arquivos.get(j + 1));
+                        arquivos.set(j + 1, aux);
                     }
                 }
             }
@@ -89,7 +104,7 @@ public class BubbleSort {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
             return null;
         }
-        
+
         return arquivos;
     }
 }
