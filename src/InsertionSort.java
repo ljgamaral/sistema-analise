@@ -1,4 +1,4 @@
-public class BubbleSort {
+public class InsertionSort {
     public arquivo[] ordenar(arquivo[] arquivos, Object ordenarPor, String nomeAtributoOrdenar) {
         String tipoDadoOrdenar = ordenarPor.getClass().getSimpleName();
 
@@ -22,26 +22,29 @@ public class BubbleSort {
     
     public arquivo[] ordenaInteger(arquivo[] arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.length;
-        arquivo aux;
         if(nomeAtributoOrdenar == "id") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getId() > arquivos[j+1].getId()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
-                    }
+            for(int i = 1; i < n; i++) {
+                arquivo chave = arquivos[i];
+                int j = i - 1;
+
+                while (j >= 0 && arquivos[j].getId() > chave.getId()) {
+                    arquivos[j + 1] = arquivos[j];
+                    j--;
                 }
+
+                arquivos[j + 1] = chave;
             }
         } else if (nomeAtributoOrdenar == "tamanho") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getTamanho() > arquivos[j+1].getTamanho()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
-                    }
+            for (int i = 1; i < n; i++){
+                arquivo chave = arquivos[i];
+                int j = i - 1;
+
+                while (j >= 0 && arquivos[j].getTamanho() > chave.getTamanho()) {
+                    arquivos[j + 1] = arquivos[j];
+                    j--;
                 }
+
+                arquivos[j + 1] = chave;
             }
         } else {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
@@ -53,16 +56,17 @@ public class BubbleSort {
     
     public arquivo[] ordenaString(arquivo[] arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.length;
-        arquivo aux;
         if(nomeAtributoOrdenar == "nome") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getNome().compareToIgnoreCase(arquivos[j + 1].getNome()) > 0) {
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j + 1];
-                        arquivos[j + 1] = aux;
-                    }
+            for (int i = 1; i < n; i++){
+                arquivo chave = arquivos[i];
+                int j = i - 1;
+
+                while (j >= 0 && arquivos[j].getNome().compareToIgnoreCase(chave.getNome()) > 0) {
+                    arquivos[j + 1].setId(arquivos[j].getId());
+                    j--;
                 }
+
+                arquivos[j + 1] = chave;
             }
         } else {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
@@ -74,16 +78,17 @@ public class BubbleSort {
     
     public arquivo[] ordenaLong(arquivo[] arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.length;
-        arquivo aux;
         if(nomeAtributoOrdenar == "data_criacao") {
-            for (int i = 0; i < n-1; i++){
-                for (int j = 0; j < n-1-i; j++){
-                    if (arquivos[j].getDataCriacaoLong() > arquivos[j+1].getDataCriacaoLong()){
-                        aux = arquivos[j];
-                        arquivos[j] = arquivos[j+1];
-                        arquivos[j+1] = aux;
-                    }
+            for (int i = 1; i < n; i++){
+                arquivo chave = arquivos[i];
+                int j = i - 1;
+
+                while (j >= 0 && arquivos[j].getDataCriacaoLong() > chave.getDataCriacaoLong()) {
+                    arquivos[j + 1] = arquivos[j];
+                    j--;
                 }
+
+                arquivos[j + 1] = chave;
             }
         } else {
             System.out.println("Erro: Não há nenhum atributo chamado " + nomeAtributoOrdenar);
