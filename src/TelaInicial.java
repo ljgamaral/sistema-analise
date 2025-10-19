@@ -9,56 +9,13 @@ public class TelaInicial extends JFrame implements ActionListener {
     Vector<arquivo> arquivos = new Vector<>();
     JTable tabela;
     JButton bOrdenaBolha, bOrdenaInsercao, bCriar;
-    JLabel lNome, lArquivo;
-    JTextField tNome;
-    JFileChooser escolherArquivo;
     tabela modelo;
-    Cronometro tempo = new Cronometro();
     
-    public Vector<arquivo> getDados() throws SQLException {
-        conexao con = new conexao();
-        ResultSet rs = null;
-        Connection conn = con.getConnection();
-        try  {
-            Statement st = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY
-            );
-            rs = st.executeQuery("SELECT * from imagens");
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String nome = rs.getString("nome");
-            int tamanho = rs.getInt("tamanho");
-            Timestamp data_criacao = rs.getTimestamp("data_criacao");
-            byte[] arquivo = rs.getBytes("arquivo");
-            arquivo novoArquivo = new arquivo(id, nome, data_criacao, tamanho, arquivo);
-            arquivos.add(novoArquivo);
-        }
-
-        return arquivos; 
-    }
-    
-    public void criarArquivo(arquivo novoArquivo) throws SQLException {
-        conexao con = new conexao();
-        ResultSet rs = null;
-        Connection conn = con.getConnection();
-        try  {
-            Statement st = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY
-            );
-            st.execute("INSERT INTO imagens (nome, data_criacao, tamanho, arquivo) VALUES (" +  novoArquivo.getNome() + ", " + novoArquivo.getDataCriacao() + ", " + novoArquivo.getTamanho() + ", " + novoArquivo.getArquivo() + ")");
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
+    conexao con = new conexao();
     
     public TelaInicial() throws SQLException {
         modelo = new tabela(arquivos);
-        modelo.atualizarTabela(getDados());
+        modelo.atualizarTabela(con.getDados(arquivos));
         tabela = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(tabela);
 
@@ -83,13 +40,6 @@ public class TelaInicial extends JFrame implements ActionListener {
         setSize(500, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-    
-    public void TelaCriarArquivo() {
-        lNome = new JLabel("Nome:");
-        lArquivo = new JLabel("Arquivo:");
-        
-
     }
     
     public void ordenaBolha(String ordenarPor) {
@@ -118,7 +68,8 @@ public class TelaInicial extends JFrame implements ActionListener {
             ordenaInsercao(resposta);
             modelo.atualizarTabela(arquivos);
         } else if(e.getSource() == bCriar) {
-            
+            TelaCriarArquivo janela = new TelaCriarArquivo();
+            janela.mostrarJanela();
         }
     }
 }
