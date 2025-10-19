@@ -1,21 +1,21 @@
 import java.util.Vector;
 
 public class InsertionSort {
-    int tempoGasto = 0;
+    long tempoGasto = 0;
     public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();
         } else if ("Nome".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();
         } else if ("Data de criação".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();

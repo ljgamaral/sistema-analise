@@ -24,6 +24,11 @@ public class arquivo {
         return nome;
     }
     
+    public Timestamp getDataCriacao() {
+        return data_criacao;
+    }
+    
+    
     public long getDataCriacaoLong() {
         return data_criacao.getTime();
     }

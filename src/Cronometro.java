@@ -1,18 +1,17 @@
 public class Cronometro extends Thread {
-    private boolean rodando = true;
-    private int miliseg = 0;
-    private int minutos = 0;
-    private int seg = 0;
-    private int milisRestantes = 0;
-    private String timerFormatado;
-    private boolean iniciado = false;
-    public synchronized void startar() 
-        {if (!iniciado) {
+    private boolean rodando = false;
+    private long inicio;
+    private long tempoPausado = 0;
+    private long acumulado = 0;
+    private String timerFormatado = "00:00:000";
+
+    public synchronized void startar() {
+        if (!rodando) {
+            rodando = true;
+            inicio = System.currentTimeMillis();
             this.start();
-            iniciado = true;
         }
-        rodando = true;
-        this.notify(); // Notifica a thread para sair do wait()
+        notify();
     }
 
     public void run() {
@@ -20,55 +19,48 @@ public class Cronometro extends Thread {
             synchronized (this) {
                 while (!rodando) {
                     try {
-                        this.wait(); // Espera até que seja notificada
+                        wait();
                     } catch (InterruptedException e) {
-                        return; // Encerra se a thread for interrompida
+                        return;
                     }
                 }
             }
-         
-            minutos = (miliseg / 60000) % 60; // Cálculo correto dos minutos
-            seg = (miliseg / 1000) % 60;      // Cálculo correto dos segundos
-            milisRestantes = miliseg % 1000; // Milissegundos restantes
+
+            long agora = System.currentTimeMillis();
+            long decorrido = acumulado + (agora - inicio);
+
+            long minutos = (decorrido / 60000) % 60;
+            long seg = (decorrido / 1000) % 60;
+            long milisRestantes = decorrido % 1000;
 
             timerFormatado = String.format("%02d:%02d:%03d", minutos, seg, milisRestantes);
-            try {
-                Thread.sleep(1); // Espera 100 milissegundos
-            } catch (InterruptedException e) {
-                rodando = false; // Interrompe o cronômetro se ocorrer uma exceção
-            }
 
-            miliseg += 1; // Aumenta o tempo em 100 milissegundos
+            try {
+                Thread.sleep(10); // Atualiza a cada 10 ms (suficiente)
+            } catch (InterruptedException e) {
+                return;
+            }
         }
     }
 
     public void parar() {
-        rodando = false;
+        if (rodando) {
+            acumulado += System.currentTimeMillis() - inicio;
+            rodando = false;
+        }
     }
-    
+
     public void zerar() {
-        miliseg = 0;
-        minutos = 0;
-        seg = 0;
-        milisRestantes = 0;
+        acumulado = 0;
+        inicio = System.currentTimeMillis();
         timerFormatado = "00:00:000";
     }
-    
-    public int getTimerInt() {
-        return miliseg;
-    }
-    
-    public String formataMiliSegs (int miliRes) {
-        minutos = (miliRes / 60000) % 60; // Cálculo correto dos minutos
-        seg = (miliRes / 1000) % 60;      // Cálculo correto dos segundos
-        milisRestantes = miliRes % 1000; // Milissegundos restantes
-        
-        String timerFormatado = String.format("%02d:%02d:%03d", minutos, seg, milisRestantes);
-        
-        return timerFormatado;
-    }
-    
+
     public String getTimer() {
         return timerFormatado;
+    }
+
+    public long getTimerInt() {
+        return acumulado + (rodando ? System.currentTimeMillis() - inicio : 0);
     }
 }

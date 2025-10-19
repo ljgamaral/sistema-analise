@@ -11,19 +11,16 @@ public class tabela extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        // Retorna a quantidade de linhas (número de arquivos)
         return arquivos.size();
     }
 
     @Override
     public int getColumnCount() {
-        // Retorna a quantidade de colunas
         return colunas.length;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        // Retorna o valor específico (célula) que será mostrado na tabela
         arquivo a = arquivos.get(rowIndex);
         switch (columnIndex) {
             case 0:
@@ -41,13 +38,11 @@ public class tabela extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        // Retorna o nome da coluna
         return colunas[column];
     }
 
-    // Atualiza o conteúdo da tabela (quando o vetor for modificado)
     public void atualizarTabela(Vector<arquivo> novosArquivos) {
         this.arquivos = novosArquivos;
-        fireTableDataChanged(); // notifica a JTable que os dados mudaram
+        fireTableDataChanged();
     }
 }

@@ -1,24 +1,23 @@
-
 import java.util.Vector;
 
 public class BubbleSort {
 
-    public int tempoGasto = 0;
+    public long tempoGasto = 0;
 
     public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();
         } else if ("Nome".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();
         } else if ("Data de criação".equals(nomeAtributoOrdenar)) {
-            tempo.start();
+            tempo.startar();
             arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
             tempo.parar();
             tempoGasto = tempo.getTimerInt();
@@ -29,7 +28,7 @@ public class BubbleSort {
         return arquivos;
     }
 
-    public int getTempoGasto() {
+    public long getTempoGasto() {
         return tempoGasto;
     }
 
