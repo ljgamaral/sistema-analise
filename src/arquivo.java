@@ -1,5 +1,6 @@
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 public class arquivo {
     private int id;
@@ -34,7 +35,9 @@ public class arquivo {
     }
     
     public String getDataCriacaoStringFormatado() {
-        return data_criacao.toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formatado = data_criacao.toLocalDateTime().format(formatter);
+        return formatado;
     }
     
     public int getTamanho() {
