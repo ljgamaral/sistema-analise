@@ -17,8 +17,10 @@ public class TelaCriarArquivo extends JFrame implements ActionListener {
     private JButton bSelecionarArquivo, bCriar, bCancelar;
     private JPanel painelBotoes, painelInformacoes;
     private File arquivoSelecionado;
+    private TelaInicial telaPai;
 
-    public TelaCriarArquivo() {
+    public TelaCriarArquivo(TelaInicial telaPai) {
+        this.telaPai = telaPai;
         lNome = new JLabel("Nome:");
         lArquivo = new JLabel("Arquivo:");
         tNome = new JTextField(20);
@@ -123,6 +125,7 @@ public class TelaCriarArquivo extends JFrame implements ActionListener {
                 arquivo novo = criarArquivo(nome, arq, tamanho);
                 JOptionPane.showMessageDialog(this,
                         "Arquivo criado com sucesso!\nID: " + novo.getId());
+                telaPai.adicionarArquivo(novo);
                 dispose();
             } catch (IOException | SQLException ex) {
                 Logger.getLogger(TelaCriarArquivo.class.getName()).log(Level.SEVERE, null, ex);

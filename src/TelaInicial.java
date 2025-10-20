@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -7,10 +8,12 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class TelaInicial extends JFrame {
+
     Vector<arquivo> arquivos = new Vector<>();
     JTable tabela;
     tabela modelo;
     JPanel painelDados, painelBotoes;
+    int idSelecionado = -1;
 
     conexao con = new conexao();
 
@@ -25,12 +28,48 @@ public class TelaInicial extends JFrame {
 
         JButton bCriar = new JButton("Criar arquivo");
         bCriar.addActionListener(e -> {
-            TelaCriarArquivo janela = new TelaCriarArquivo();
+            TelaCriarArquivo janela = new TelaCriarArquivo(this);
             janela.mostrarJanela();
+        });
+        JButton bEditar = new JButton("Editar arquivo");
+        bEditar.setEnabled(false);
+        bEditar.addActionListener(e -> {
+            if (idSelecionado != -1) {
+                TelaEditarArquivo janela = new TelaEditarArquivo(this, arquivos.elementAt(idSelecionado));
+                janela.mostrarJanela();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma linha para editar");
+            }
+        });
+        JButton bExcluir = new JButton("Excluir arquivo");
+        bExcluir.setEnabled(false);
+        bExcluir.addActionListener(e -> {
+            if (idSelecionado != -1) {
+                int confirmar = JOptionPane.showConfirmDialog(
+                        this,
+                        "Tem certeza que deseja excluir esse arquivo?",
+                        "Confirmar exclusão",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirmar == JOptionPane.YES_OPTION) {
+                    arquivo arqExcluir = arquivos.get(idSelecionado);
+
+                    ExcluirArquivo excluir = new ExcluirArquivo();
+                    excluir.excluir(arquivos, arqExcluir);
+
+                    deletarArquivo(arqExcluir);
+
+                    JOptionPane.showMessageDialog(this, "Arquivo excluído com sucesso!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir");
+            }
         });
 
         painelBotoes = new JPanel();
         painelBotoes.add(bCriar);
+        painelBotoes.add(bEditar);
+        painelBotoes.add(bExcluir);
 
         setLayout(new BorderLayout());
         add(painelDados, BorderLayout.NORTH);
@@ -48,20 +87,28 @@ public class TelaInicial extends JFrame {
                 if (!e.getValueIsAdjusting()) {
                     int selectedRow = tabela.getSelectedRow();
                     if (selectedRow >= 0 && selectedRow < arquivos.size()) {
+                        idSelecionado = selectedRow;
+                        bEditar.setEnabled(true);
+                        bExcluir.setEnabled(true);
                         mostrarDetalhes(arquivos.get(selectedRow));
+                    } else {
+                        idSelecionado = -1;
+                        bEditar.setEnabled(false);
+                        bExcluir.setEnabled(false);
                     }
                 }
             }
         });
 
-        tabela.getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int coluna = tabela.columnAtPoint(e.getPoint());
-                String nomeColuna = tabela.getColumnName(coluna);
-                mostrarMenuOrdenacao(e, nomeColuna);
-            }
-        });
+        tabela.getTableHeader()
+                .addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int coluna = tabela.columnAtPoint(e.getPoint());
+                        String nomeColuna = tabela.getColumnName(coluna);
+                        mostrarMenuOrdenacao(e, nomeColuna);
+                    }
+                });
     }
 
     private void mostrarMenuOrdenacao(MouseEvent e, String nomeColuna) {
@@ -126,6 +173,29 @@ public class TelaInicial extends JFrame {
     public void ordenaInsercao(String ordenarPor) {
         InsertionSort ordenar = new InsertionSort();
         arquivos = ordenar.ordenar(arquivos, ordenarPor);
+    }
+
+    public void adicionarArquivo(arquivo novo) {
+        arquivos.add(novo);
+        modelo.fireTableDataChanged();
+    }
+
+    public void deletarArquivo(arquivo deletado) {
+        modelo.fireTableDataChanged();
+        painelDados.removeAll();
+        painelDados.revalidate();
+        painelDados.repaint();
+    }
+
+    public void atualizarArquivo(arquivo editado) {
+        for (int i = 0; i < arquivos.size(); i++) {
+            if (arquivos.get(i).getId() == editado.getId()) {
+                arquivos.set(i, editado);
+                modelo.fireTableRowsUpdated(i, i);
+                break;
+            }
+        }
+        mostrarDetalhes(editado);
     }
 
     public static void main(String[] args) throws SQLException {

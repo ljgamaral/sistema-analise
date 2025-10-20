@@ -54,8 +54,7 @@ public class conexao {
         int id = -1;
         String sql = "INSERT INTO imagens (nome, data_criacao, tamanho, arquivo) VALUES (?, NOW(), ?, ?)";
 
-        try (Connection conn = getConnection();      
-        PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = getConnection(); PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             st.setString(1, nome);
             st.setInt(2, tamanho);
@@ -75,22 +74,36 @@ public class conexao {
         return id;
     }
 
-    public void editarArquivo(int id, arquivo arq) {
-    String sql = "UPDATE imagens SET nome = ?, tamanho = ?, arquivo = ? WHERE id = ?";
+    public void editarArquivo(int id, String nome, int tamanho, byte[] arquivo) {
+        String sql = "UPDATE imagens SET nome = ?, tamanho = ?, arquivo = ? WHERE id = ?";
 
-    try (Connection conn = getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setString(1, arq.getNome());
-        ps.setLong(2, arq.getTamanho());
-        ps.setBytes(3, arq.getArquivo());
-        ps.setInt(4, id);
+            ps.setString(1, nome);
+            ps.setLong(2, tamanho);
+            ps.setBytes(3, arquivo);
+            ps.setInt(4, id);
 
-        ps.executeUpdate();
-        System.out.println("Arquivo atualizado com sucesso!");
+            ps.executeUpdate();
+            System.out.println("Arquivo atualizado com sucesso!");
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
+    
+    public void excluirArquivo(int id) {
+        String sql = "DELETE from imagens where id = ?";
+        
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+            System.out.println("Arquivo excluido com sucesso!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

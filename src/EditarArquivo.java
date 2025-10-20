@@ -8,7 +8,7 @@ public class EditarArquivo {
         int index = buscaBinaria.buscarIndexArquivo(arqs, arqAntigo);
         arquivos.set(index, arqNovo);
         conexao con = new conexao();
-        con.editarArquivo(index, arqNovo);
+        con.editarArquivo(index, arqNovo.getNome(), arqNovo.getTamanho(), arqNovo.getArquivo());
         
         return arquivos;
     }
