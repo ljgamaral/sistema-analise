@@ -116,6 +116,7 @@ public class TelaInicial extends JFrame {
 
         JMenuItem itemBolha = new JMenuItem("Ordenar por Bolha");
         JMenuItem itemInsercao = new JMenuItem("Ordenar por Inserção");
+        JMenuItem itemQuick = new JMenuItem("Ordenar por Quick Sort");
 
         itemBolha.addActionListener(ev -> {
             ordenaBolha(nomeColuna);
@@ -126,9 +127,15 @@ public class TelaInicial extends JFrame {
             ordenaInsercao(nomeColuna);
             modelo.atualizarTabela(arquivos);
         });
+        
+        itemQuick.addActionListener(ev -> {
+            ordenaQuick(nomeColuna);
+            modelo.atualizarTabela(arquivos);
+        });
 
         menu.add(itemBolha);
         menu.add(itemInsercao);
+        menu.add(itemQuick);
 
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
@@ -172,6 +179,11 @@ public class TelaInicial extends JFrame {
 
     public void ordenaInsercao(String ordenarPor) {
         InsertionSort ordenar = new InsertionSort();
+        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+    }
+    
+    public void ordenaQuick(String ordenarPor) {
+        QuickSort ordenar = new QuickSort();
         arquivos = ordenar.ordenar(arquivos, ordenarPor);
     }
 

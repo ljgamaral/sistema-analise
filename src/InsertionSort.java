@@ -8,21 +8,19 @@ public class InsertionSort {
             tempo.startar();
             arquivos = ordenaInteger(arquivos, nomeAtributoOrdenar);
             tempo.parar();
-            tempoGasto = tempo.getTimerInt();
         } else if ("Nome".equals(nomeAtributoOrdenar)) {
             tempo.startar();
             arquivos = ordenaString(arquivos, nomeAtributoOrdenar);
             tempo.parar();
-            tempoGasto = tempo.getTimerInt();
         } else if ("Data de criação".equals(nomeAtributoOrdenar)) {
             tempo.startar();
             arquivos = ordenaLong(arquivos, nomeAtributoOrdenar);
             tempo.parar();
-            tempoGasto = tempo.getTimerInt();
         } else {
             System.out.println("Erro: não há nenhum atributo chamado '" + nomeAtributoOrdenar + "'");
         }
-        System.out.println(tempoGasto);
+        tempoGasto = tempo.getTimerInt();
+        System.out.println("Tempo gasto: " + tempoGasto + " ms");
         return arquivos;
     }
     
