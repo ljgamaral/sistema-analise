@@ -4,7 +4,7 @@ public class BubbleSort {
 
     public long tempoGasto = 0;
 
-    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado,boolean salvar) {
+    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, String casoColuna, boolean salvar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
             tempo.startar();
@@ -26,7 +26,7 @@ public class BubbleSort {
         if(salvar) {
             System.out.println("Tempo gasto: " + tempoGasto + " ms");
             Conexao con = new Conexao();
-            con.registrarOrdenacao((int)tempoGasto, "Bubble Sort", casoUsado, nomeAtributoOrdenar);
+            con.registrarOrdenacao((int)tempoGasto, "Bubble Sort", casoUsado, casoColuna, nomeAtributoOrdenar);
         }
         
         return arquivos;

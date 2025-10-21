@@ -1,8 +1,8 @@
 import java.util.Vector;
 
-public class InsertionSort {
+public class InsertSort {
     long tempoGasto = 0;
-    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
+    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, String casoColuna, boolean salvar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
             tempo.startar();
@@ -24,7 +24,7 @@ public class InsertionSort {
         if(salvar) {
             System.out.println("Tempo gasto: " + tempoGasto + " ms");
             Conexao con = new Conexao();
-            con.registrarOrdenacao((int)tempoGasto, "Insert Sort", casoUsado, nomeAtributoOrdenar);
+            con.registrarOrdenacao((int)tempoGasto, "Insert Sort", casoUsado, casoColuna, nomeAtributoOrdenar);
         }
         
         return arquivos;

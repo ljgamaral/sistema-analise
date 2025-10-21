@@ -107,8 +107,8 @@ public class Conexao {
         }
     }
 
-    public void registrarOrdenacao(int tempo, String metodo, int caso, String coluna_ordenada) {
-        String sql = "INSERT INTO registros_ordenacoes (tempo, metodo, caso_usado, coluna_ordenada) VALUES (?, ?, ?, ?)";
+    public void registrarOrdenacao(int tempo, String metodo, int caso, String casoColuna, String colunaOrdenada) {
+        String sql = "INSERT INTO registros_ordenacoes (tempo, metodo, caso_usado, caso_coluna, coluna_ordenada) VALUES (?, ?, ?, ?, ?)";
 
         String casoString = "";
         try (Connection conn = getConnection(); PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -128,7 +128,8 @@ public class Conexao {
                     casoString = "Medio";
             }
             st.setString(3, casoString);
-            st.setString(4, coluna_ordenada);
+            st.setString(4, casoColuna);
+            st.setString(5, colunaOrdenada);
             st.executeUpdate();
 
         } catch (SQLException e) {

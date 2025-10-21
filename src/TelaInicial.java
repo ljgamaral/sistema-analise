@@ -14,6 +14,7 @@ public class TelaInicial extends JFrame {
     JPanel painelDados, painelBotoes;
     int idSelecionado = -1;
     int escolhaCaso = 0;
+    String escolhaColuna = "ID";
 
     Conexao con = new Conexao();
 
@@ -67,7 +68,7 @@ public class TelaInicial extends JFrame {
         });
         JButton bAleatorizar = new JButton("Aleatorizar ordem");
         bAleatorizar.addActionListener(e -> {
-            TelaAleatorizar janela = new TelaAleatorizar(this, arquivos, escolhaCaso);
+            TelaAleatorizar janela = new TelaAleatorizar(this, arquivos, escolhaCaso, escolhaColuna);
             janela.mostrarJanela();
         });
 
@@ -127,19 +128,19 @@ public class TelaInicial extends JFrame {
         itemBolha.addActionListener(ev -> {
             ordenaBolha(nomeColuna);
             modelo.atualizarTabela(arquivos);
-            escolhaCaso = 4;
+            escolhaColuna = nomeColuna;
         });
 
         itemInsercao.addActionListener(ev -> {
             ordenaInsercao(nomeColuna);
             modelo.atualizarTabela(arquivos);
-            escolhaCaso = 4;
+            escolhaColuna = nomeColuna;
         });
         
         itemQuick.addActionListener(ev -> {
             ordenaQuick(nomeColuna);
             modelo.atualizarTabela(arquivos);
-            escolhaCaso = 4;
+            escolhaColuna = nomeColuna;
         });
 
         menu.add(itemBolha);
@@ -183,17 +184,17 @@ public class TelaInicial extends JFrame {
 
     public void ordenaBolha(String ordenarPor) {
         BubbleSort bubble = new BubbleSort();
-        arquivos = bubble.ordenar(arquivos, ordenarPor, escolhaCaso, true);
+        arquivos = bubble.ordenar(arquivos, ordenarPor, escolhaCaso, escolhaColuna, true);
     }
 
     public void ordenaInsercao(String ordenarPor) {
-        InsertionSort insert = new InsertionSort();
-        arquivos = insert.ordenar(arquivos, ordenarPor, escolhaCaso, true);
+        InsertSort insert = new InsertSort();
+        arquivos = insert.ordenar(arquivos, ordenarPor, escolhaCaso, escolhaColuna, true);
     }
     
     public void ordenaQuick(String ordenarPor) {
         QuickSort quick = new QuickSort();
-        arquivos = quick.ordenar(arquivos, ordenarPor, escolhaCaso, true);
+        arquivos = quick.ordenar(arquivos, ordenarPor, escolhaCaso, escolhaColuna, true);
     }
 
     public static void main(String[] args) throws SQLException {

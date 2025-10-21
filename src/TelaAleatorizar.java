@@ -1,5 +1,7 @@
 
 import java.awt.BorderLayout;
+import static java.awt.BorderLayout.CENTER;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -10,31 +12,46 @@ import javax.swing.*;
 
 public class TelaAleatorizar extends JFrame implements ItemListener, ActionListener {
 
-    JLabel lAleatorizar;
+    JLabel lAleatorizar, lColuna;
     JRadioButton melhorCaso, medioCaso, piorCaso;
     ButtonGroup grupoEscolhas;
     JPanel painel, painelBotoes;
     JButton bContinuar, bCancelar;
+    JComboBox<String> selecao;
+    String[] colunas = {"ID", "Nome", "Tamanho", "Data de criação"};
     TelaInicial telaPai;
     Vector<Arquivo> arquivos;
-    int escolha;
+    int escolhaCaso;
+    String escolhaColuna;
 
-    public TelaAleatorizar(TelaInicial telaPai, Vector<Arquivo> arquivos, int escolha) {
+    public TelaAleatorizar(TelaInicial telaPai, Vector<Arquivo> arquivos, int escolhaCaso, String escolhaColuna) {
         this.telaPai = telaPai;
         this.arquivos = arquivos;
-        this.escolha = escolha;
-
+        this.escolhaCaso = escolhaCaso;
+        this.escolhaColuna = escolhaColuna;
+        
         lAleatorizar = new JLabel("Aleatorizar com:");
 
         melhorCaso = new JRadioButton("Melhor caso");
-        melhorCaso.setSelected(escolha == 0);
+        melhorCaso.setSelected(escolhaCaso == 0);
         melhorCaso.addItemListener(this);
         medioCaso = new JRadioButton("Médio caso");
-        medioCaso.setSelected(escolha == 1 || escolha == 4);
+        medioCaso.setSelected(escolhaCaso == 1 || escolhaCaso == 4);
         medioCaso.addItemListener(this);
         piorCaso = new JRadioButton("Pior caso");
-        piorCaso.setSelected(escolha == 2);
+        piorCaso.setSelected(escolhaCaso == 2);
         piorCaso.addItemListener(this);
+        
+        lColuna = new JLabel("Com a coluna:");
+        
+        selecao = new JComboBox<>(colunas);
+        selecao.setSelectedItem(escolhaColuna);
+
+        selecao.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                escolhaColuna = (String) selecao.getSelectedItem();
+            }
+        });
 
         bContinuar = new JButton("Continuar");
         bContinuar.addActionListener(this);
@@ -52,9 +69,13 @@ public class TelaAleatorizar extends JFrame implements ItemListener, ActionListe
         painelBotoes.add(bContinuar);
 
         painel = new JPanel();
+        painel.add(lAleatorizar);
         painel.add(melhorCaso);
         painel.add(medioCaso);
         painel.add(piorCaso);
+        painel.add(lColuna);
+        painel.add(selecao);
+        painel.setLayout(new FlowLayout(1));
 
         add(painel);
         add(painelBotoes);
@@ -63,9 +84,9 @@ public class TelaAleatorizar extends JFrame implements ItemListener, ActionListe
         add(painel, BorderLayout.CENTER);
         add(painelBotoes, BorderLayout.SOUTH);
         setTitle("Aleatorizar");
-        setSize(300, 120);
+        setSize(400, 150);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public void mostrarJanela() {
@@ -75,29 +96,30 @@ public class TelaAleatorizar extends JFrame implements ItemListener, ActionListe
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (melhorCaso.isSelected()) {
-            escolha = 0;
+            escolhaCaso = 0;
         } else if (medioCaso.isSelected()) {
-            escolha = 1;
+            escolhaCaso = 1;
         } else if (piorCaso.isSelected()) {
-            escolha = 2;
+            escolhaCaso = 2;
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Aleatorizar gerar = new Aleatorizar(arquivos, "Id");
+        Aleatorizar gerar = new Aleatorizar(arquivos, escolhaColuna);
         if (e.getSource() == bContinuar) {
-            if (escolha == 0) {
+            if (escolhaCaso == 0) {
                 arquivos = gerar.melhorCaso();
-            } else if (escolha == 1) {
+            } else if (escolhaCaso == 1) {
                 arquivos = gerar.medioCaso();
-            } else if (escolha == 2) {
+            } else if (escolhaCaso == 2) {
                 arquivos = gerar.piorCaso();
             } else {
                 dispose();
             }
             telaPai.modelo.atualizarTabela(arquivos);
-            telaPai.escolhaCaso = escolha;
+            telaPai.escolhaCaso = escolhaCaso;
+            telaPai.escolhaColuna = escolhaColuna;
             dispose();
         } else if (e.getSource() == bCancelar) {
             dispose();
