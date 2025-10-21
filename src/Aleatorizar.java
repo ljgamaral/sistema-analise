@@ -7,7 +7,7 @@ public class Aleatorizar {
     
     public Aleatorizar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
         QuickSort ordenar = new QuickSort();
-        this.arquivos = ordenar.ordenar(arquivos, nomeAtributoOrdenar);
+        this.arquivos = ordenar.ordenar(arquivos, nomeAtributoOrdenar, 0, false);
     }
     
     public Vector<arquivo> melhorCaso() {

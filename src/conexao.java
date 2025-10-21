@@ -91,10 +91,10 @@ public class conexao {
             e.printStackTrace();
         }
     }
-    
+
     public void excluirArquivo(int id) {
         String sql = "DELETE from imagens where id = ?";
-        
+
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
@@ -104,6 +104,33 @@ public class conexao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void registrarOrdenacao(int tempo, String metodo, int caso, String coluna_ordenada) {
+        String sql = "INSERT INTO registros_ordenacoes (tempo, metodo, caso_usado, coluna_ordenada) VALUES (?, ?, ?, ?)";
+
+        String casoString = "";
+        try (Connection conn = getConnection(); PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            st.setInt(1, tempo);
+            st.setString(2, metodo);
+            switch (caso) {
+                case 0:
+                    casoString = "Melhor";
+                    break;
+                case 1:
+                    casoString = "Medio";
+                    break;
+                case 2:
+                    casoString = "Pior";
+                    break;
+            }
+            st.setString(3, casoString);
+            st.setString(4, coluna_ordenada);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 }

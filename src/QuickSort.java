@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 public class QuickSort {
     public long tempoGasto = 0;
 
-    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
         Cronometro tempo = new Cronometro();
 
         if ("ID".equalsIgnoreCase(nomeAtributoOrdenar) || "Tamanho".equalsIgnoreCase(nomeAtributoOrdenar)) {
@@ -27,7 +27,11 @@ public class QuickSort {
         }
 
         tempoGasto = tempo.getTimerInt();
-        System.out.println("Tempo gasto: " + tempoGasto + " ms");
+        if(salvar) {
+            System.out.println("Tempo gasto: " + tempoGasto + " ms");
+            conexao con = new conexao();
+            con.registrarOrdenacao((int)tempoGasto, "Quick Sort", casoUsado, nomeAtributoOrdenar);
+        }
 
         return arquivos;
     }

@@ -180,17 +180,17 @@ public class TelaInicial extends JFrame {
 
     public void ordenaBolha(String ordenarPor) {
         BubbleSort ordenar = new BubbleSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
 
     public void ordenaInsercao(String ordenarPor) {
         InsertionSort ordenar = new InsertionSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
     
     public void ordenaQuick(String ordenarPor) {
         QuickSort ordenar = new QuickSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor);
+        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
 
     public void adicionarArquivo(arquivo novo) {

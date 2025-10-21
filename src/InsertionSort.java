@@ -2,7 +2,7 @@ import java.util.Vector;
 
 public class InsertionSort {
     long tempoGasto = 0;
-    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
             tempo.startar();
@@ -19,8 +19,14 @@ public class InsertionSort {
         } else {
             System.out.println("Erro: não há nenhum atributo chamado '" + nomeAtributoOrdenar + "'");
         }
+        
         tempoGasto = tempo.getTimerInt();
-        System.out.println("Tempo gasto: " + tempoGasto + " ms");
+        if(salvar) {
+            System.out.println("Tempo gasto: " + tempoGasto + " ms");
+            conexao con = new conexao();
+            con.registrarOrdenacao((int)tempoGasto, "Insert Sort", casoUsado, nomeAtributoOrdenar);
+        }
+        
         return arquivos;
     }
     
