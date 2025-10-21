@@ -2,14 +2,14 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
-public class arquivo {
+public class Arquivo {
     private int id;
     private String nome;
     private Timestamp data_criacao;
     private int tamanho;
     private byte[] arquivo;
     
-    public arquivo(int id, String nome, Timestamp data_criacao, int tamanho, byte[] arquivo) {
+    public Arquivo(int id, String nome, Timestamp data_criacao, int tamanho, byte[] arquivo) {
         this.id = id;
         this.nome = nome;
         this.data_criacao = data_criacao;

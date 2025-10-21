@@ -19,11 +19,11 @@ public class TelaEditarArquivo extends JFrame implements ActionListener {
     private JButton bSelecionarArquivo, bExcluirImagem, bSalvar, bCancelar;
     private JPanel painelBotoes, painelInformacoes, imagemLabel;
     private File arquivoSelecionado;
-    private arquivo arqNovo;
+    private Arquivo arqNovo;
     private byte[] imagemBytes;
     private TelaInicial telaPai;
 
-    public TelaEditarArquivo(TelaInicial telaPai, arquivo arqNovo) {
+    public TelaEditarArquivo(TelaInicial telaPai, Arquivo arqNovo) {
         this.arqNovo = arqNovo;
         this.imagemBytes = arqNovo.getArquivo();
         this.telaPai = telaPai;
@@ -131,11 +131,11 @@ public class TelaEditarArquivo extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public arquivo editarArquivo(int id, String nome, int tamanho, byte[] arq) throws SQLException {
-        conexao con = new conexao();
+    public Arquivo editarArquivo(int id, String nome, int tamanho, byte[] arq) throws SQLException {
+        Conexao con = new Conexao();
         con.editarArquivo(id, nome, tamanho, arq);
         Timestamp agora = new Timestamp(System.currentTimeMillis());
-        return new arquivo(id, nome, agora, tamanho, arq);
+        return new Arquivo(id, nome, agora, tamanho, arq);
     }
 
     public String getNome() {
@@ -184,10 +184,10 @@ public class TelaEditarArquivo extends JFrame implements ActionListener {
             }
             try {
                 int tamanho = imagemBytes.length;
-                arquivo novo = editarArquivo(arqNovo.getId(), nome, tamanho, imagemBytes);
+                Arquivo novo = editarArquivo(arqNovo.getId(), nome, tamanho, imagemBytes);
                 JOptionPane.showMessageDialog(this,
                         "Arquivo editado com sucesso!\nID: " + novo.getId());
-                telaPai.atualizarArquivo(novo);
+                telaPai.modelo.atualizarArquivo(novo, telaPai);
                 dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(TelaEditarArquivo.class.getName()).log(Level.SEVERE, null, ex);

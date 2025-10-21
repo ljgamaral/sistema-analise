@@ -1,11 +1,11 @@
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
-public class tabela extends AbstractTableModel {
+public class Tabela extends AbstractTableModel {
     private final String[] colunas = {"ID", "Nome", "Tamanho", "Data de criação"};
-    private Vector<arquivo> arquivos;
+    private Vector<Arquivo> arquivos;
 
-    public tabela(Vector<arquivo> dados) {
+    public Tabela(Vector<Arquivo> dados) {
         this.arquivos = dados;
     }
 
@@ -21,7 +21,7 @@ public class tabela extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        arquivo a = arquivos.get(rowIndex);
+        Arquivo a = arquivos.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return a.getId();
@@ -41,8 +41,31 @@ public class tabela extends AbstractTableModel {
         return colunas[column];
     }
 
-    public void atualizarTabela(Vector<arquivo> novosArquivos) {
+    public void atualizarTabela(Vector<Arquivo> novosArquivos) {
         this.arquivos = novosArquivos;
         fireTableDataChanged();
+    }
+    
+    public void adicionarArquivo(Arquivo novo, TelaInicial telaPai) {
+        arquivos.add(novo);
+        telaPai.modelo.fireTableDataChanged();
+    }
+
+    public void deletarArquivo(Arquivo deletado, TelaInicial telaPai) {
+        telaPai.modelo.fireTableDataChanged();
+        telaPai.painelDados.removeAll();
+        telaPai.painelDados.revalidate();
+        telaPai.painelDados.repaint();
+    }
+
+    public void atualizarArquivo(Arquivo editado, TelaInicial telaPai) {
+        for (int i = 0; i < arquivos.size(); i++) {
+            if (arquivos.get(i).getId() == editado.getId()) {
+                arquivos.set(i, editado);
+                telaPai.modelo.fireTableRowsUpdated(i, i);
+                break;
+            }
+        }
+        telaPai.mostrarDetalhes(editado);
     }
 }

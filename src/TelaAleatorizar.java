@@ -16,10 +16,10 @@ public class TelaAleatorizar extends JFrame implements ItemListener, ActionListe
     JPanel painel, painelBotoes;
     JButton bContinuar, bCancelar;
     TelaInicial telaPai;
-    Vector<arquivo> arquivos;
+    Vector<Arquivo> arquivos;
     int escolha;
 
-    public TelaAleatorizar(TelaInicial telaPai, Vector<arquivo> arquivos, int escolha) {
+    public TelaAleatorizar(TelaInicial telaPai, Vector<Arquivo> arquivos, int escolha) {
         this.telaPai = telaPai;
         this.arquivos = arquivos;
         this.escolha = escolha;

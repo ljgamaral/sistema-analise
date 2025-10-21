@@ -2,7 +2,7 @@ import java.util.Vector;
 
 public class InsertionSort {
     long tempoGasto = 0;
-    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
+    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
             tempo.startar();
@@ -23,18 +23,18 @@ public class InsertionSort {
         tempoGasto = tempo.getTimerInt();
         if(salvar) {
             System.out.println("Tempo gasto: " + tempoGasto + " ms");
-            conexao con = new conexao();
+            Conexao con = new Conexao();
             con.registrarOrdenacao((int)tempoGasto, "Insert Sort", casoUsado, nomeAtributoOrdenar);
         }
         
         return arquivos;
     }
     
-    public Vector<arquivo> ordenaInteger(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaInteger(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
         if("ID".equals(nomeAtributoOrdenar)) {
             for(int i = 1; i < n; i++) {
-                arquivo chave = arquivos.get(i);
+                Arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
                 while (j >= 0 && arquivos.get(j).getId() > chave.getId()) {
@@ -46,7 +46,7 @@ public class InsertionSort {
             }
         } else if ("Tamanho".equals(nomeAtributoOrdenar)) {
             for (int i = 1; i < n; i++){
-                arquivo chave = arquivos.get(i);
+                Arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
                 while (j >= 0 && arquivos.get(j).getTamanho() > chave.getTamanho()) {
@@ -64,11 +64,11 @@ public class InsertionSort {
         return arquivos;
     }
     
-    public Vector<arquivo> ordenaString(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaString(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
         if("Nome".equals(nomeAtributoOrdenar)) {
             for (int i = 1; i < n; i++){
-                arquivo chave = arquivos.get(i);
+                Arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
                 while (j >= 0 && arquivos.get(j).getNome().compareToIgnoreCase(chave.getNome()) > 0) {
@@ -86,11 +86,11 @@ public class InsertionSort {
         return arquivos;
     }
     
-    public Vector<arquivo> ordenaLong(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaLong(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
         if("Data de criação".equals(nomeAtributoOrdenar)) {
             for (int i = 1; i < n; i++){
-                arquivo chave = arquivos.get(i);
+                Arquivo chave = arquivos.get(i);
                 int j = i - 1;
 
                 while (j >= 0 && arquivos.get(j).getDataCriacaoLong() > chave.getDataCriacaoLong()) {

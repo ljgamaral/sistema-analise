@@ -75,11 +75,11 @@ public class TelaCriarArquivo extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public arquivo criarArquivo(String nome, byte[] conteudo, int tamanho) throws SQLException {
-        conexao con = new conexao();
+    public Arquivo criarArquivo(String nome, byte[] conteudo, int tamanho) throws SQLException {
+        Conexao con = new Conexao();
         int id = con.criarArquivo(nome, conteudo, tamanho);
         Timestamp agora = new Timestamp(System.currentTimeMillis());
-        return new arquivo(id, nome, agora, tamanho, conteudo);
+        return new Arquivo(id, nome, agora, tamanho, conteudo);
     }
 
     public String getNome() {
@@ -122,10 +122,10 @@ public class TelaCriarArquivo extends JFrame implements ActionListener {
             try {
                 byte[] arq = getArquivoByte();
                 int tamanho = getTamanho();
-                arquivo novo = criarArquivo(nome, arq, tamanho);
+                Arquivo novo = criarArquivo(nome, arq, tamanho);
                 JOptionPane.showMessageDialog(this,
                         "Arquivo criado com sucesso!\nID: " + novo.getId());
-                telaPai.adicionarArquivo(novo);
+                telaPai.modelo.adicionarArquivo(novo, telaPai);
                 dispose();
             } catch (IOException | SQLException ex) {
                 Logger.getLogger(TelaCriarArquivo.class.getName()).log(Level.SEVERE, null, ex);

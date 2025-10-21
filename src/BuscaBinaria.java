@@ -3,7 +3,7 @@ import java.util.Vector;
 
 public class BuscaBinaria {
 
-    int buscarIndexArquivo(Vector<arquivo> arquivos, arquivo arq) {
+    int buscarIndexArquivo(Vector<Arquivo> arquivos, Arquivo arq) {
         int inicio = 0;
         int fim = arquivos.size() - 1;
         int meio;

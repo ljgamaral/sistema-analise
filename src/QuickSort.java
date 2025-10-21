@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 public class QuickSort {
     public long tempoGasto = 0;
 
-    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
+    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado, boolean salvar) {
         Cronometro tempo = new Cronometro();
 
         if ("ID".equalsIgnoreCase(nomeAtributoOrdenar) || "Tamanho".equalsIgnoreCase(nomeAtributoOrdenar)) {
@@ -29,7 +29,7 @@ public class QuickSort {
         tempoGasto = tempo.getTimerInt();
         if(salvar) {
             System.out.println("Tempo gasto: " + tempoGasto + " ms");
-            conexao con = new conexao();
+            Conexao con = new Conexao();
             con.registrarOrdenacao((int)tempoGasto, "Quick Sort", casoUsado, nomeAtributoOrdenar);
         }
 
@@ -40,12 +40,12 @@ public class QuickSort {
         return tempoGasto;
     }
 
-    public static void quickSortNumerico(Vector<arquivo> arquivos, int esquerda, int direita, String nomeAtributoOrdenar) {
+    public static void quickSortNumerico(Vector<Arquivo> arquivos, int esquerda, int direita, String nomeAtributoOrdenar) {
         try {
             if (arquivos == null || arquivos.isEmpty()) return;
 
             String metodoNome = "get" + nomeAtributoOrdenar.substring(0, 1).toUpperCase() + nomeAtributoOrdenar.substring(1);
-            Method metodo = arquivo.class.getMethod(metodoNome);
+            Method metodo = Arquivo.class.getMethod(metodoNome);
 
             int esq = esquerda;
             int dir = direita;
@@ -57,7 +57,7 @@ public class QuickSort {
                 while (((Number) metodo.invoke(arquivos.get(dir))).longValue() > pivo) dir--;
 
                 if (esq <= dir) {
-                    arquivo temp = arquivos.get(esq);
+                    Arquivo temp = arquivos.get(esq);
                     arquivos.set(esq, arquivos.get(dir));
                     arquivos.set(dir, temp);
                     esq++;
@@ -75,12 +75,12 @@ public class QuickSort {
         }
     }
 
-    public static void quickSortString(Vector<arquivo> arquivos, int esquerda, int direita, String nomeAtributoOrdenar) {
+    public static void quickSortString(Vector<Arquivo> arquivos, int esquerda, int direita, String nomeAtributoOrdenar) {
         try {
             if (arquivos == null || arquivos.isEmpty()) return;
 
             String metodoNome = "get" + nomeAtributoOrdenar.substring(0, 1).toUpperCase() + nomeAtributoOrdenar.substring(1);
-            Method metodo = arquivo.class.getMethod(metodoNome);
+            Method metodo = Arquivo.class.getMethod(metodoNome);
 
             int esq = esquerda;
             int dir = direita;
@@ -92,7 +92,7 @@ public class QuickSort {
                 while (((String) metodo.invoke(arquivos.get(dir))).compareToIgnoreCase(pivo) > 0) dir--;
 
                 if (esq <= dir) {
-                    arquivo temp = arquivos.get(esq);
+                    Arquivo temp = arquivos.get(esq);
                     arquivos.set(esq, arquivos.get(dir));
                     arquivos.set(dir, temp);
                     esq++;

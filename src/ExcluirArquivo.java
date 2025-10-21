@@ -2,9 +2,9 @@ import java.util.Vector;
 
 public class ExcluirArquivo {
 
-    Vector<arquivo> excluir(Vector<arquivo> arquivos, arquivo arqExcluir) {
+    Vector<Arquivo> excluir(Vector<Arquivo> arquivos, Arquivo arqExcluir) {
         arquivos.remove(arqExcluir);
-        conexao con = new conexao();
+        Conexao con = new Conexao();
         con.excluirArquivo(arqExcluir.getId());
 
         return arquivos;

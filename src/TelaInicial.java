@@ -8,17 +8,17 @@ import java.util.Vector;
 
 public class TelaInicial extends JFrame {
 
-    Vector<arquivo> arquivos = new Vector<>();
+    Vector<Arquivo> arquivos = new Vector<>();
     JTable tabela;
-    tabela modelo;
+    Tabela modelo;
     JPanel painelDados, painelBotoes;
     int idSelecionado = -1;
     int escolhaCaso = 0;
 
-    conexao con = new conexao();
+    Conexao con = new Conexao();
 
     public TelaInicial() throws SQLException {
-        modelo = new tabela(arquivos);
+        modelo = new Tabela(arquivos);
         modelo.atualizarTabela(con.getDados(arquivos));
         tabela = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(tabela);
@@ -52,12 +52,12 @@ public class TelaInicial extends JFrame {
                         JOptionPane.YES_NO_OPTION
                 );
                 if (confirmar == JOptionPane.YES_OPTION) {
-                    arquivo arqExcluir = arquivos.get(idSelecionado);
+                    Arquivo arqExcluir = arquivos.get(idSelecionado);
 
                     ExcluirArquivo excluir = new ExcluirArquivo();
                     excluir.excluir(arquivos, arqExcluir);
 
-                    deletarArquivo(arqExcluir);
+                    modelo.deletarArquivo(arqExcluir, this);
 
                     JOptionPane.showMessageDialog(this, "Arquivo excluído com sucesso!");
                 }
@@ -149,7 +149,7 @@ public class TelaInicial extends JFrame {
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    private void mostrarDetalhes(arquivo arq) {
+    public void mostrarDetalhes(Arquivo arq) {
         painelDados.removeAll();
 
         JPanel painelTexto = new JPanel(new GridLayout(4, 1));
@@ -182,41 +182,18 @@ public class TelaInicial extends JFrame {
     }
 
     public void ordenaBolha(String ordenarPor) {
-        BubbleSort ordenar = new BubbleSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
+        BubbleSort bubble = new BubbleSort();
+        arquivos = bubble.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
 
     public void ordenaInsercao(String ordenarPor) {
-        InsertionSort ordenar = new InsertionSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
+        InsertionSort insert = new InsertionSort();
+        arquivos = insert.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
     
     public void ordenaQuick(String ordenarPor) {
-        QuickSort ordenar = new QuickSort();
-        arquivos = ordenar.ordenar(arquivos, ordenarPor, escolhaCaso, true);
-    }
-
-    public void adicionarArquivo(arquivo novo) {
-        arquivos.add(novo);
-        modelo.fireTableDataChanged();
-    }
-
-    public void deletarArquivo(arquivo deletado) {
-        modelo.fireTableDataChanged();
-        painelDados.removeAll();
-        painelDados.revalidate();
-        painelDados.repaint();
-    }
-
-    public void atualizarArquivo(arquivo editado) {
-        for (int i = 0; i < arquivos.size(); i++) {
-            if (arquivos.get(i).getId() == editado.getId()) {
-                arquivos.set(i, editado);
-                modelo.fireTableRowsUpdated(i, i);
-                break;
-            }
-        }
-        mostrarDetalhes(editado);
+        QuickSort quick = new QuickSort();
+        arquivos = quick.ordenar(arquivos, ordenarPor, escolhaCaso, true);
     }
 
     public static void main(String[] args) throws SQLException {

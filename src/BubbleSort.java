@@ -4,7 +4,7 @@ public class BubbleSort {
 
     public long tempoGasto = 0;
 
-    public Vector<arquivo> ordenar(Vector<arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado,boolean salvar) {
+    public Vector<Arquivo> ordenar(Vector<Arquivo> arquivos, String nomeAtributoOrdenar, int casoUsado,boolean salvar) {
         Cronometro tempo = new Cronometro();
         if ("ID".equals(nomeAtributoOrdenar) || "Tamanho".equals(nomeAtributoOrdenar)) {
             tempo.startar();
@@ -25,7 +25,7 @@ public class BubbleSort {
         tempoGasto = tempo.getTimerInt();
         if(salvar) {
             System.out.println("Tempo gasto: " + tempoGasto + " ms");
-            conexao con = new conexao();
+            Conexao con = new Conexao();
             con.registrarOrdenacao((int)tempoGasto, "Bubble Sort", casoUsado, nomeAtributoOrdenar);
         }
         
@@ -36,9 +36,9 @@ public class BubbleSort {
         return tempoGasto;
     }
 
-    public Vector<arquivo> ordenaInteger(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaInteger(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
-        arquivo aux;
+        Arquivo aux;
         if ("ID".equals(nomeAtributoOrdenar)) {
             for (int i = 0; i < n - 1; i++) {
                 for (int j = 0; j < n - 1 - i; j++) {
@@ -67,9 +67,9 @@ public class BubbleSort {
         return arquivos;
     }
 
-    public Vector<arquivo> ordenaString(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaString(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
-        arquivo aux;
+        Arquivo aux;
         if ("Nome".equals(nomeAtributoOrdenar)) {
             for (int i = 0; i < n - 1; i++) {
                 for (int j = 0; j < n - 1 - i; j++) {
@@ -87,9 +87,9 @@ public class BubbleSort {
         return arquivos;
     }
 
-    public Vector<arquivo> ordenaLong(Vector<arquivo> arquivos, String nomeAtributoOrdenar) {
+    public Vector<Arquivo> ordenaLong(Vector<Arquivo> arquivos, String nomeAtributoOrdenar) {
         final int n = arquivos.size();
-        arquivo aux;
+        Arquivo aux;
         if ("Data de criação".equals(nomeAtributoOrdenar)) {
             for (int i = 0; i < n - 1; i++) {
                 for (int j = 0; j < n - 1 - i; j++) {

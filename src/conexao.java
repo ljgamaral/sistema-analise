@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Vector;
 
-public class conexao {
+public class Conexao {
 
     public static Connection getConnection() {
         Connection conn = null;
@@ -25,7 +25,7 @@ public class conexao {
         return conn;
     }
 
-    public Vector<arquivo> getDados(Vector<arquivo> arquivos) throws SQLException {
+    public Vector<Arquivo> getDados(Vector<Arquivo> arquivos) throws SQLException {
         String sql = "SELECT * FROM imagens";
 
         try (Connection conn = getConnection(); Statement st = conn.createStatement(
@@ -39,7 +39,7 @@ public class conexao {
                 Timestamp data_criacao = rs.getTimestamp("data_criacao");
                 byte[] arquivo = rs.getBytes("arquivo");
 
-                arquivo novoArquivo = new arquivo(id, nome, data_criacao, tamanho, arquivo);
+                Arquivo novoArquivo = new Arquivo(id, nome, data_criacao, tamanho, arquivo);
                 arquivos.add(novoArquivo);
             }
 
