@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -14,6 +13,7 @@ public class TelaInicial extends JFrame {
     tabela modelo;
     JPanel painelDados, painelBotoes;
     int idSelecionado = -1;
+    int escolhaCaso = 0;
 
     conexao con = new conexao();
 
@@ -65,11 +65,17 @@ public class TelaInicial extends JFrame {
                 JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir");
             }
         });
+        JButton bAleatorizar = new JButton("Aleatorizar ordem");
+        bAleatorizar.addActionListener(e -> {
+            TelaAleatorizar janela = new TelaAleatorizar(this, arquivos, escolhaCaso);
+            janela.mostrarJanela();
+        });
 
         painelBotoes = new JPanel();
         painelBotoes.add(bCriar);
         painelBotoes.add(bEditar);
         painelBotoes.add(bExcluir);
+        painelBotoes.add(bAleatorizar);        
 
         setLayout(new BorderLayout());
         add(painelDados, BorderLayout.NORTH);
