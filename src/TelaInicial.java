@@ -127,16 +127,19 @@ public class TelaInicial extends JFrame {
         itemBolha.addActionListener(ev -> {
             ordenaBolha(nomeColuna);
             modelo.atualizarTabela(arquivos);
+            escolhaCaso = 4;
         });
 
         itemInsercao.addActionListener(ev -> {
             ordenaInsercao(nomeColuna);
             modelo.atualizarTabela(arquivos);
+            escolhaCaso = 4;
         });
         
         itemQuick.addActionListener(ev -> {
             ordenaQuick(nomeColuna);
             modelo.atualizarTabela(arquivos);
+            escolhaCaso = 4;
         });
 
         menu.add(itemBolha);

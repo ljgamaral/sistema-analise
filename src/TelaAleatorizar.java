@@ -30,7 +30,7 @@ public class TelaAleatorizar extends JFrame implements ItemListener, ActionListe
         melhorCaso.setSelected(escolha == 0);
         melhorCaso.addItemListener(this);
         medioCaso = new JRadioButton("Médio caso");
-        medioCaso.setSelected(escolha == 1);
+        medioCaso.setSelected(escolha == 1 || escolha == 4);
         medioCaso.addItemListener(this);
         piorCaso = new JRadioButton("Pior caso");
         piorCaso.setSelected(escolha == 2);

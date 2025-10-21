@@ -119,11 +119,13 @@ public class conexao {
                     casoString = "Melhor";
                     break;
                 case 1:
-                    casoString = "Medio";
+                    casoString = "Medio padrao";
                     break;
                 case 2:
                     casoString = "Pior";
                     break;
+                case 4:
+                    casoString = "Medio";
             }
             st.setString(3, casoString);
             st.setString(4, coluna_ordenada);
